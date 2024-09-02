@@ -12,18 +12,20 @@ const loader = document.querySelector('.loader');
 
 form.addEventListener('submit', handleSubmit);
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   clearImages();
   event.preventDefault();
-  loader.classList.remove('hidden');
+  loader.classList.remove('is-hidden');
+  
   let wordForSearch = input.value.trim();
+  
   const page = 1;
   if (wordForSearch === '') {
     iziToast.error({
       position: 'topRight',
       message: 'Please fill the input',
     });
-    loader.classList.add('hidden');
+    loader.classList.add('is-hidden');
     return;
   }
   searchImagesByQuery(`${wordForSearch}`, page).then(async data => {
@@ -34,10 +36,15 @@ function handleSubmit(event) {
           'Sorry, there are no images matching your search query. Please try again!',
       });
 
-      loader.classList.add('hidden');
+      loader.classList.remove('is-hidden');
       return;
     } else {
       createImages(data);
     }
+    loader.classList.add('is-hidden');
   });
+  
 }
+
+
+
